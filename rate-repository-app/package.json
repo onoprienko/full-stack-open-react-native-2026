@@ -7,7 +7,8 @@
     "start:tunnel": "expo start --tunnel",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "expo lint"
   },
   "dependencies": {
     "@expo/metro-runtime": "~55.0.12",
@@ -20,6 +21,8 @@
   },
   "private": true,
   "devDependencies": {
-    "@expo/ngrok": "^4.1.0"
+    "@expo/ngrok": "^4.1.0",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~55.0.1"
   }
 }
