@@ -4,6 +4,7 @@ const theme = {
     textSecondary: '#586069',
     primary: '#0366d6',
     textLight: '#ffffff',
+    lightBackground: '#e6e6e6',
   },
   fontSizes: {
     body: 16,

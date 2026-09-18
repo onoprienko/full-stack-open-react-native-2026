@@ -1,16 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import RepositoryList from './../../src/components/RepositoryList';
 import AppBar from './AppBar';
 import AppBarTab from './AppBarTab';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
 const Main = () => {
   return (
-    <View style={0}>
+    <View style={styles.container}>
       <AppBar />
-      <Text>Rate Repository Application</Text>
       <AppBarTab>
-        <RepositoryList />
+        <RepositoryList style={styles.tab} />
       </AppBarTab>
       <StatusBar style="auto" />
     </View>
