@@ -37,6 +37,9 @@ const AppBar = () => {
         <Link to="/signin">
           <Text style={styles.text}>SignIn</Text>
         </Link>
+        <Link to="/BodyMassIndexCalculator">
+          <Text style={styles.text}>BodyMassIndexCalculator</Text>
+        </Link>
       </ScrollView>
     </View>
   );
