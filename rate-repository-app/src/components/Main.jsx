@@ -1,8 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
+import { Route, Routes, Navigate } from 'react-router-native';
 import RepositoryList from './../../src/components/RepositoryList';
 import AppBar from './AppBar';
-import AppBarTab from './AppBarTab';
+import SignIn from './SignIn';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,10 +14,11 @@ const Main = () => {
   return (
     <View style={styles.container}>
       <AppBar />
-      <AppBarTab>
-        <RepositoryList style={styles.tab} />
-      </AppBarTab>
-      <StatusBar style="auto" />
+      <Routes>
+        <Route path="/" element={<RepositoryList />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </View>
   );
 };
