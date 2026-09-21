@@ -13,9 +13,15 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 4,
   },
-  info: { display: 'flex', flexDirection: 'row', gap: 24, marginBottom: 20 },
+  info: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 24,
+    marginBottom: 20,
+  },
   infoText: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     gap: 8,
     alignItems: 'flex-start',
