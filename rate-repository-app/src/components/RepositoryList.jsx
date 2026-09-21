@@ -6,10 +6,11 @@ import useRepositories from '../hooks/useRepositories';
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
-  const { repositories } = useRepositories();
+  const { data, loading } = useRepositories();
+  if (loading) return 'loading...';
 
-  const repositoryNodes = repositories
-    ? repositories.edges.map((edge) => edge.node)
+  const repositoryNodes = data.repositories
+    ? data.repositories.edges.map((edge) => edge.node)
     : [];
 
   return (
