@@ -5,12 +5,9 @@ import useRepositories from '../hooks/useRepositories';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const RepositoryList = () => {
-  const { data, loading } = useRepositories();
-  if (loading) return 'loading...';
-
-  const repositoryNodes = data.repositories
-    ? data.repositories.edges.map((edge) => edge.node)
+export const RepositoryListContainer = ({ repositories }) => {
+  const repositoryNodes = repositories
+    ? repositories.edges.map((edge) => edge.node)
     : [];
 
   return (
@@ -21,6 +18,12 @@ const RepositoryList = () => {
       style={styles.list}
     />
   );
+};
+
+const RepositoryList = () => {
+  const { data, loading } = useRepositories();
+  if (loading) return 'loading...';
+  return <RepositoryListContainer repositories={data.repositories} />;
 };
 
 const styles = StyleSheet.create({
