@@ -1,4 +1,5 @@
 import { Text, TextInput, Pressable, View, StyleSheet } from 'react-native';
+import { useNavigate } from 'react-router';
 import { useFormik } from 'formik';
 import theme from '../theme';
 import * as yup from 'yup';
@@ -18,6 +19,7 @@ const validationSchema = yup.object().shape({
 
 const SignIn = () => {
   const [signIn] = useSignIn();
+  let navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -33,6 +35,7 @@ const SignIn = () => {
             password,
           });
           console.log('🔵', data);
+          navigate('/');
         } catch (error) {
           console.error('🟠', error.message);
         }
