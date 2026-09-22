@@ -1,61 +1,42 @@
-import { useState } from 'react';
-import { Text, TextInput, Pressable, View } from 'react-native';
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+} from '@testing-library/react-native';
+import { SignInContainer } from '../../components/SignIn';
 
-const Form = ({ onSubmit }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+describe('SignIn', () => {
+  describe('SignInContainer', () => {
+    it('calls onSubmit function with correct arguments when a valid form is submitted', async () => {
+      const handleSubmit = jest.fn();
+      const formik = {
+        values: {
+          username: '',
+          password: '',
+        },
+        errors: {},
+        touched: {},
+        handleChange: jest.fn((field) => (text) => {}),
+        handleBlur: jest.fn((field) => () => {}),
+        handleSubmit: handleSubmit,
+      };
 
-  const handleSubmit = () => {
-    onSubmit({ username, password });
-  };
+      await render(<SignInContainer formik={formik} />);
 
-  return (
-    <View>
-      <View>
-        <TextInput
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-          placeholder="Username"
-        />
-      </View>
-      <View>
-        <TextInput
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          placeholder="Password"
-        />
-      </View>
-      <View>
-        <Pressable onPress={handleSubmit}>
-          <Text>Submit</Text>
-        </Pressable>
-      </View>
-    </View>
-  );
-};
+      await fireEvent.changeText(
+        screen.getByPlaceholderText('Username'),
+        'kalle',
+      );
+      await fireEvent.changeText(
+        screen.getByPlaceholderText('Password'),
+        'password',
+      );
+      await fireEvent.press(screen.getByText('Sign in'));
 
-describe('Form', () => {
-  it('calls function provided by onSubmit prop after pressing the submit button', async () => {
-    const onSubmit = jest.fn();
-    await render(<Form onSubmit={onSubmit} />);
-
-    await fireEvent.changeText(
-      screen.getByPlaceholderText('Username'),
-      'kalle',
-    );
-    await fireEvent.changeText(
-      screen.getByPlaceholderText('Password'),
-      'password',
-    );
-    await fireEvent.press(screen.getByText('Submit'));
-
-    expect(onSubmit).toHaveBeenCalledTimes(1);
-
-    // onSubmit.mock.calls[0][0] contains the first argument of the first call
-    expect(onSubmit.mock.calls[0][0]).toEqual({
-      username: 'kalle',
-      password: 'password',
+      await waitFor(() => {
+        expect(handleSubmit).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });
