@@ -3,35 +3,7 @@ import { useFormik } from 'formik';
 import theme from '../theme';
 import * as yup from 'yup';
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 12,
-    maxWidth: 640,
-    display: 'flex',
-    gap: 16,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: theme.colors.textPrimary,
-    padding: 16,
-    borderRadius: 8,
-  },
-  inputError: {
-    borderColor: theme.colors.error,
-  },
-  button: {
-    backgroundColor: theme.colors.primary,
-    padding: 20,
-    borderRadius: 8,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    text: {
-      color: theme.colors.textLight,
-      fontWeight: theme.fontWeights.bold,
-    },
-  },
-});
+import useSignIn from '../hooks/useSignIn';
 
 const validationSchema = yup.object().shape({
   username: yup
@@ -45,18 +17,30 @@ const validationSchema = yup.object().shape({
 });
 
 const SignIn = () => {
+  const [signIn] = useSignIn();
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
     validationSchema,
-    onSubmit: ({ username, password }) => {
-      if (username && password) console.log(username, password);
+    onSubmit: async ({ username, password }) => {
+      if (username && password) {
+        try {
+          const { data } = await signIn({
+            username,
+            password,
+          });
+          console.log('🔵', data);
+        } catch (error) {
+          console.error('🟠', error.message);
+        }
+      }
     },
   });
 
-  console.log(formik);
+  //console.log(formik);
   return (
     <View style={styles.container}>
       <View>
@@ -105,5 +89,35 @@ const SignIn = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 12,
+    maxWidth: 640,
+    display: 'flex',
+    gap: 16,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: theme.colors.textPrimary,
+    padding: 16,
+    borderRadius: 8,
+  },
+  inputError: {
+    borderColor: theme.colors.error,
+  },
+  button: {
+    backgroundColor: theme.colors.primary,
+    padding: 20,
+    borderRadius: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    text: {
+      color: theme.colors.textLight,
+      fontWeight: theme.fontWeights.bold,
+    },
+  },
+});
 
 export default SignIn;
