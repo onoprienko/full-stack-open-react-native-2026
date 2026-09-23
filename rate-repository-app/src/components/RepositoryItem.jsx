@@ -1,6 +1,80 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable, Alert } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
+import { useNavigate } from 'react-router-native';
+import * as Linking from 'expo-linking'; //
+
+const RepositoryItem = ({ item, button }) => {
+  const navigate = useNavigate();
+  const thousandFormat = (number) => {
+    if (number < 1000) return number;
+    return Math.round(number / 100) / 10 + 'k';
+  };
+
+  const openURL = async (url) => {
+    try {
+      await Linking.openURL(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <Pressable
+      onPress={() => navigate(`/${item.id}`)}
+      testID="repositoryItem"
+      key={item.id}
+      style={styles.container}
+    >
+      <View style={styles.info}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: item.ownerAvatarUrl,
+          }}
+        />
+        <View style={styles.infoText}>
+          <Text style={styles.name}>{item.fullName}</Text>
+          <Text>{item.description}</Text>
+          <Text style={styles.language}>{item.language}</Text>
+        </View>
+      </View>
+
+      <View style={styles.stats}>
+        <View style={styles.statItem}>
+          <Text style={styles.statItem.number}>
+            {thousandFormat(item.stargazersCount)}
+          </Text>
+          <Text>Stars</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statItem.number}>
+            {thousandFormat(item.forksCount)}
+          </Text>
+          <Text>Forks</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statItem.number}>
+            {thousandFormat(item.reviewCount)}
+          </Text>
+          <Text>Reviews</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statItem.number}>
+            {thousandFormat(item.ratingAverage)}
+          </Text>
+          <Text>Rating</Text>
+        </View>
+      </View>
+
+      {!button || (
+        <Pressable onPress={() => openURL(item.url)} style={styles.button}>
+          <Text style={styles.button.text}>Open in GitHub</Text>
+        </Pressable>
+      )}
+    </Pressable>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -51,58 +125,19 @@ const styles = StyleSheet.create({
       fontWeight: theme.fontWeights.bold,
     },
   },
+  button: {
+    marginTop: 20,
+    backgroundColor: theme.colors.primary,
+    padding: 20,
+    borderRadius: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    text: {
+      color: theme.colors.textLight,
+      fontWeight: theme.fontWeights.bold,
+    },
+  },
 });
-
-const RepositoryItem = ({ item }) => {
-  const thousandFormat = (number) => {
-    if (number < 1000) return number;
-    return Math.round(number / 100) / 10 + 'k';
-  };
-
-  return (
-    <View testID="repositoryItem" key={item.id} style={styles.container}>
-      <View style={styles.info}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: item.ownerAvatarUrl,
-          }}
-        />
-        <View style={styles.infoText}>
-          <Text style={styles.name}>{item.fullName}</Text>
-          <Text>{item.description}</Text>
-          <Text style={styles.language}>{item.language}</Text>
-        </View>
-      </View>
-
-      <View style={styles.stats}>
-        <View style={styles.statItem}>
-          <Text style={styles.statItem.number}>
-            {thousandFormat(item.stargazersCount)}
-          </Text>
-          <Text>Stars</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statItem.number}>
-            {thousandFormat(item.forksCount)}
-          </Text>
-          <Text>Forks</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statItem.number}>
-            {thousandFormat(item.reviewCount)}
-          </Text>
-          <Text>Reviews</Text>
-        </View>
-        <View style={styles.statItem}>
-          <Text style={styles.statItem.number}>
-            {thousandFormat(item.ratingAverage)}
-          </Text>
-          <Text>Rating</Text>
-        </View>
-      </View>
-    </View>
-  );
-};
 
 export default RepositoryItem;
