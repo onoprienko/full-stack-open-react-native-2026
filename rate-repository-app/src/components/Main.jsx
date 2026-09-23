@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   main: {
     backgroundColor: theme.colors.lightBackground,
     padding: 12,
+    flex: 1,
   },
 });
 

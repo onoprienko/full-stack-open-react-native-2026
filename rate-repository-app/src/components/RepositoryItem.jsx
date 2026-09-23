@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Pressable, Alert } from 'react-native';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
 import { useNavigate } from 'react-router-native';
