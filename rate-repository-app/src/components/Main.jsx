@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-native';
 import RepositoryList from './../../src/components/RepositoryList';
 import AppBar from './AppBar';
 import SignIn from './SignIn';
-import BodyMassIndexCalculator from './BodyMassIndexCalculator';
+import ReviewForm from './ReviewForm';
 import RepositoryPage from './RepositiryPage';
 import theme from '../theme';
 
@@ -27,10 +27,7 @@ const Main = () => {
           <Route path="/" element={<RepositoryList />} />
           <Route path="/:repositoryId" element={<RepositoryPage />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route
-            path="/BodyMassIndexCalculator"
-            element={<BodyMassIndexCalculator />}
-          />
+          <Route path="/create-a-review" element={<ReviewForm />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </View>

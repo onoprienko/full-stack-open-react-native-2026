@@ -29,19 +29,20 @@ const AppBar = () => {
         <Link to="/">
           <Text style={styles.text}>Repositories</Text>
         </Link>
-        {!data.me ? (
+        {!data?.me ? (
           <Link to="/signin">
             <Text style={styles.text}>Sign in</Text>
           </Link>
         ) : (
-          <Pressable onPress={sighOut}>
-            <Text style={styles.text}>Sign out</Text>
-          </Pressable>
+          <>
+            <Link to="/create-a-review">
+              <Text style={styles.text}>Create a review</Text>
+            </Link>
+            <Pressable onPress={sighOut}>
+              <Text style={styles.text}>Sign out</Text>
+            </Pressable>
+          </>
         )}
-
-        <Link to="/BodyMassIndexCalculator">
-          <Text style={styles.text}>BodyMassIndexCalculator</Text>
-        </Link>
       </ScrollView>
     </View>
   );
