@@ -30,9 +30,14 @@ const AppBar = () => {
           <Text style={styles.text}>Repositories</Text>
         </Link>
         {!data?.me ? (
-          <Link to="/signin">
-            <Text style={styles.text}>Sign in</Text>
-          </Link>
+          <>
+            <Link to="/signin">
+              <Text style={styles.text}>Sign in</Text>
+            </Link>
+            <Link to="/signup">
+              <Text style={styles.text}>Sign up</Text>
+            </Link>
+          </>
         ) : (
           <>
             <Link to="/create-a-review">
