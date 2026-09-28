@@ -29,6 +29,7 @@ export const REVIEW_FIELDS = gql`
     }
     repository {
       fullName
+      url
     }
   }
 `;

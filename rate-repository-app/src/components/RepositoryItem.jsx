@@ -2,7 +2,7 @@ import { View, Image, StyleSheet, Pressable } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
 import { useNavigate } from 'react-router-native';
-import * as Linking from 'expo-linking'; //
+import * as Linking from 'expo-linking';
 
 const RepositoryItem = ({ item, button }) => {
   const navigate = useNavigate();

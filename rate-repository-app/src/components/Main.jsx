@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Route, Routes, Navigate } from 'react-router-native';
 import RepositoryList from './../../src/components/RepositoryList';
 import AppBar from './AppBar';
@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
 
 const Main = () => {
   const { data, loading } = useMe({ includeReviews: true });
-  if (loading) return 'loading...';
-  console.log('📅', data);
+  if (loading) return <Text>loading...</Text>;
   return (
     <View style={styles.container}>
       <AppBar me={data?.me} />

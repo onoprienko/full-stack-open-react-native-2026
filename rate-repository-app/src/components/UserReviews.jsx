@@ -2,7 +2,6 @@ import { Text, View, FlatList, StyleSheet } from 'react-native';
 import ReviewItem from './ReviewItem';
 
 const UserReviews = ({ reviews }) => {
-  console.log(reviews);
   if (!reviews) return <Text>No reviews</Text>;
   const reviewsNodes = reviews.edges.map((edge) => edge.node) || [];
 
