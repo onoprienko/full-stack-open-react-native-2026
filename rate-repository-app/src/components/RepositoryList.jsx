@@ -3,11 +3,15 @@ import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import RepositorySortPicker from './RepositorySortPicker';
 import { useState } from 'react';
+import RepositorySearch from './RepositorySearch';
+import { useDebouncedCallback } from 'use-debounce';
 
 export const RepositoryListContainer = ({
   repositories,
   sortBy,
   setSortBy,
+  searchInput,
+  handleSearchChange,
 }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -19,9 +23,15 @@ export const RepositoryListContainer = ({
       style={{ flex: 1 }}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       renderItem={({ item }) => <RepositoryItem item={item} />}
-      ListHeaderComponent={() => (
-        <RepositorySortPicker sortBy={sortBy} setSortBy={setSortBy} />
-      )}
+      ListHeaderComponent={
+        <>
+          <RepositorySearch
+            searchInput={searchInput}
+            handleSearchChange={handleSearchChange}
+          />
+          <RepositorySortPicker sortBy={sortBy} setSortBy={setSortBy} />
+        </>
+      }
     />
   );
 };
@@ -34,7 +44,21 @@ const RepositoryList = () => {
     },
     name: 'Latest repositories',
   });
-  const { data, loading } = useRepositories(sortBy);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const debouncedSetSearchKeyword = useDebouncedCallback((value) => {
+    setSearchKeyword(value.trim());
+  }, 1000);
+
+  const handleSearchChange = (value) => {
+    setSearchInput(value);
+    debouncedSetSearchKeyword(value);
+  };
+
+  const { data, loading } = useRepositories({
+    ...sortBy,
+    searchKeyword,
+  });
   if (loading) return <Text>Loading...</Text>;
   if (!data || !data.repositories) return <Text>Repositories not found</Text>;
   return (
@@ -42,6 +66,8 @@ const RepositoryList = () => {
       repositories={data.repositories}
       sortBy={sortBy}
       setSortBy={setSortBy}
+      searchInput={searchInput}
+      handleSearchChange={handleSearchChange}
     />
   );
 };
