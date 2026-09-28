@@ -3,9 +3,15 @@ import useRepositoryReviews from '../hooks/useRepositoryReviews';
 import ReviewItem from './ReviewItem';
 
 const RepositoryReviews = ({ repositoryId }) => {
-  const { data, loading } = useRepositoryReviews(repositoryId);
-  if (loading) return <Text>Loading...</Text>;
-  if (!data || !data.repository) return <Text>Reviews not found</Text>;
+  const { data, loading, fetchMore } = useRepositoryReviews({
+    repositoryId,
+    first: 2,
+  });
+
+  if (!data || !data.repository) {
+    if (loading) return <Text>Loading...</Text>;
+    return <Text>Reviews not found</Text>;
+  }
 
   const reviewsNodes =
     data.repository.reviews.edges.map((edge) => edge.node) || [];
@@ -18,6 +24,8 @@ const RepositoryReviews = ({ repositoryId }) => {
         contentContainerStyle={styles.contentContainer}
         renderItem={({ item }) => <ReviewItem review={item} />}
         keyExtractor={({ id }) => id}
+        onEndReached={fetchMore}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );

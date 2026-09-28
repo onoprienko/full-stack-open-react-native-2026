@@ -12,6 +12,7 @@ export const RepositoryListContainer = ({
   setSortBy,
   searchInput,
   handleSearchChange,
+  onEndReached,
 }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -32,6 +33,8 @@ export const RepositoryListContainer = ({
           <RepositorySortPicker sortBy={sortBy} setSortBy={setSortBy} />
         </>
       }
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -55,12 +58,17 @@ const RepositoryList = () => {
     debouncedSetSearchKeyword(value);
   };
 
-  const { data, loading } = useRepositories({
+  const { data, loading, fetchMore } = useRepositories({
     ...sortBy,
+    first: 2,
     searchKeyword,
   });
-  if (loading) return <Text>Loading...</Text>;
-  if (!data || !data.repositories) return <Text>Repositories not found</Text>;
+
+  if (!data || !data.repositories) {
+    if (loading) return <Text>Loading...</Text>;
+    return <Text>Repositories not found</Text>;
+  }
+
   return (
     <RepositoryListContainer
       repositories={data.repositories}
@@ -68,6 +76,7 @@ const RepositoryList = () => {
       setSortBy={setSortBy}
       searchInput={searchInput}
       handleSearchChange={handleSearchChange}
+      onEndReached={fetchMore}
     />
   );
 };
