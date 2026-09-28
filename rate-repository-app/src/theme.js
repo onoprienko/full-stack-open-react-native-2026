@@ -5,6 +5,7 @@ const theme = {
     primary: '#0366d6',
     textLight: '#ffffff',
     lightBackground: '#e6e6e6',
+    lighterBackground: '#eeeeee',
     error: '#d73a4a',
   },
   fontSizes: {

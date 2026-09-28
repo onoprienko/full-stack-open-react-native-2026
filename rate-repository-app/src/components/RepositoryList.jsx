@@ -1,8 +1,14 @@
 import { Text, FlatList, View, StyleSheet } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
+import RepositorySortPicker from './RepositorySortPicker';
+import { useState } from 'react';
 
-export const RepositoryListContainer = ({ repositories }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  sortBy,
+  setSortBy,
+}) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -13,14 +19,31 @@ export const RepositoryListContainer = ({ repositories }) => {
       style={{ flex: 1 }}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       renderItem={({ item }) => <RepositoryItem item={item} />}
+      ListHeaderComponent={() => (
+        <RepositorySortPicker sortBy={sortBy} setSortBy={setSortBy} />
+      )}
     />
   );
 };
 
 const RepositoryList = () => {
-  const { data, loading } = useRepositories();
+  const [sortBy, setSortBy] = useState({
+    value: {
+      orderBy: 'CREATED_AT',
+      orderDirection: 'DESC',
+    },
+    name: 'Latest repositories',
+  });
+  const { data, loading } = useRepositories(sortBy);
   if (loading) return <Text>Loading...</Text>;
-  return <RepositoryListContainer repositories={data.repositories} />;
+  if (!data || !data.repositories) return <Text>Repositories not found</Text>;
+  return (
+    <RepositoryListContainer
+      repositories={data.repositories}
+      sortBy={sortBy}
+      setSortBy={setSortBy}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
