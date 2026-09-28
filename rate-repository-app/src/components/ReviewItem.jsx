@@ -2,14 +2,16 @@ import { Text, View, StyleSheet } from 'react-native';
 import theme from '../theme';
 import { format } from 'date-fns';
 
-const ReviewItem = ({ review }) => {
+const ReviewItem = ({ review, userReview }) => {
   return (
     <View style={styles.container}>
       <View style={styles.review}>
         <Text style={styles.rating}>{review.rating}</Text>
         <View style={styles.content}>
           <View style={styles.head}>
-            <Text style={styles.name}>{review.user.username}</Text>
+            <Text style={styles.name}>
+              {userReview ? review.repository.fullName : review.user.username}
+            </Text>
             <Text>{format(new Date(review.createdAt), 'dd MMM yyyy')}</Text>
           </View>
           <Text>{review.text}</Text>

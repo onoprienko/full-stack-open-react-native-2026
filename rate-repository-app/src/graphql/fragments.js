@@ -16,3 +16,19 @@ export const REPO_FIELDS = gql`
     language
   }
 `;
+
+export const REVIEW_FIELDS = gql`
+  fragment ReviewFields on Review {
+    id
+    text
+    rating
+    createdAt
+    user {
+      id
+      username
+    }
+    repository {
+      fullName
+    }
+  }
+`;

@@ -7,6 +7,8 @@ import SignUp from './SignUp';
 import ReviewForm from './ReviewForm';
 import RepositoryPage from './RepositiryPage';
 import theme from '../theme';
+import UserReviews from './UserReviews';
+import useMe from '../hooks/useMe';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,9 +22,12 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
+  const { data, loading } = useMe({ includeReviews: true });
+  if (loading) return 'loading...';
+  console.log('📅', data);
   return (
     <View style={styles.container}>
-      <AppBar />
+      <AppBar me={data?.me} />
       <View style={styles.main}>
         <Routes>
           <Route path="/" element={<RepositoryList />} />
@@ -31,6 +36,10 @@ const Main = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/create-a-review" element={<ReviewForm />} />
           <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="/my-reviews"
+            element={<UserReviews reviews={data?.me?.reviews} />}
+          />
         </Routes>
       </View>
     </View>

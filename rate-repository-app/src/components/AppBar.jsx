@@ -3,16 +3,12 @@ import Constants from 'expo-constants';
 import theme from '../theme';
 import { Link } from 'react-router-native';
 
-import useMe from '../hooks/useMe';
 import useAuthStorage from '../hooks/useAuthStorage';
 import { useApolloClient } from '@apollo/client/react';
 
-const AppBar = () => {
-  const { data, loading } = useMe();
+const AppBar = ({ me }) => {
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
-
-  if (loading) return 'loading...';
 
   const sighOut = async () => {
     await authStorage.removeAccessToken();
@@ -29,7 +25,7 @@ const AppBar = () => {
         <Link to="/">
           <Text style={styles.text}>Repositories</Text>
         </Link>
-        {!data?.me ? (
+        {!me ? (
           <>
             <Link to="/signin">
               <Text style={styles.text}>Sign in</Text>
@@ -42,6 +38,9 @@ const AppBar = () => {
           <>
             <Link to="/create-a-review">
               <Text style={styles.text}>Create a review</Text>
+            </Link>
+            <Link to="/my-reviews">
+              <Text style={styles.text}>My reviews</Text>
             </Link>
             <Pressable onPress={sighOut}>
               <Text style={styles.text}>Sign out</Text>
